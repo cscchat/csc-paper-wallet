@@ -1,0 +1,186 @@
+<!doctype html>
+
+<!--
+    USE THIS TEMPLATE WHEN BUILDING JS FILES YOURSELF.
+    YOU WILL HAVE TO GENERATE JS/BUNDLE.JS
+-->
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>CasinoCoin Wallet Generator</title>
+
+  <meta name="author" content="CSC Chat">
+
+  <script src="js/bundle.js"></script>
+
+  <style>
+
+  @media all {
+    body {
+      margin: 0 auto;
+      text-align: center;
+      font-family: Verdana, sans-serif;
+      padding: 10px;
+    }
+
+    #left span, #right span {
+      font: 26px/1.714285714285714 'Open Sans',Arial, Helvetica, sans-serif;
+    }
+
+    #paper {
+      width: 827px;
+      height: 443px;
+      border: 1px solid black;
+      margin: 15px auto;
+      background-color: red;
+      background-size: 827px 443px;
+      font-family: monospace;
+      font-size: 26px;
+    }
+
+
+    #left {
+      text-align: left;
+      width: 270px;
+      height: 100%;
+      float: left;
+      padding-top: 20px;
+    }
+
+    #left span {
+      padding-left: 25px;
+    }
+
+    #right span {
+      padding-right: 25px;
+    }
+
+    #right {
+      text-align: right;
+      width: 260px;
+      height: 100%;
+      float: left;
+      padding-top: 20px;
+    }
+
+    #qraddr img {
+      margin-left:25px;
+    }
+
+    #qrsecr img {
+      margin-right:25px;
+      display: inline !important;
+    }
+
+    .qr img {
+      width: 200px;
+      height: 200px;
+      margin-top:50px;
+      border: 3px solid white;
+    }
+
+    canvas {
+      display: none;
+    }
+
+    #address span, #secret span {
+      position:absolute;
+      transform: rotate(90deg);
+      transform-origin: left top 0;
+      padding-left: 15px;
+      background-color: white;
+      font-size: 16px;
+    }
+
+    #address, #secret {
+      width:38px;
+      height:100%;
+      float: left;
+    }
+
+    #secret {
+      text-align: right;
+    }
+
+    #void {
+      float: left;
+      height: 100%;
+      width: 220px;
+    }
+
+    button {
+      position: relative;
+      display: inline-block;
+      padding: 5px 15px;
+      height: 1.5em;
+      cursor: pointer;
+      font-size: 1.5em;
+      outline:none;
+    }
+
+    small {
+      position: absolute;
+      right: 0px;
+      bottom: 0px;
+      padding: 10px;
+    }
+  }
+
+  @media print {
+    button { display: none; }
+    #ribbon {display: none; }
+  }
+
+  </style>
+
+</head>
+<body onload="generate()">
+
+    <div id="paper">
+      <div id="left">
+        <span>CasinoCoin Address</span>
+        <div id="qraddr" class="qr"></div>
+      </div>
+      <div id="address"><span id="addrtext"></span></div>
+      <div id="void"></div>
+      <div id="secret"><span id="secrtext"></span></div>
+      <div id="right">
+        <span>Secret Key</span>
+        <div id="qrsecr" class="qr"></div>
+      </div>
+    </div>
+
+    <br>
+
+    <button onclick="generate()" title="Generate new">Generate New</button>
+    <button onclick="window.print()" title="Print">Print</button>
+
+    <br>
+
+    <small><a href="https://cscchat.com">CSC Chat</a>, 2017</small>
+
+    <script>
+
+      function generate(){
+        var wallet = generateWallet();
+
+        document.getElementById('qraddr').innerHTML = '';
+        document.getElementById('qrsecr').innerHTML = '';
+
+        var qraddr = new QRCode("qraddr");
+        qraddr.makeCode(wallet["address"]);
+        document.getElementById('addrtext').innerHTML = wallet['address'];
+
+        var qrsecr = new QRCode("qrsecr");
+        qrsecr.makeCode(wallet["secret"]);
+        document.getElementById('secrtext').innerHTML = wallet['secret'];
+      }
+
+    </script>
+
+<a id="ribbon" href="https://github.com/cscchat/csc-paper-wallet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="img/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+
+</body>
+</html>

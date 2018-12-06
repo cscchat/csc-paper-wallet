@@ -17382,171 +17382,344 @@
   </script>
 
   <style>
+/*!
+ * HTML-Sheets-of-Paper (https://github.com/delight-im/HTML-Sheets-of-Paper)
+ * Copyright (c) delight.im (https://www.delight.im/)
+ * Licensed under the MIT License (https://opensource.org/licenses/MIT)
+ */
 
-  @media all {
-    body {
-      margin: 0 auto;
-      text-align: center;
-      font-family: Verdana, sans-serif;
-      padding: 10px;
-    }
+html, body {
+	/* Reset the document's margin values */
+	margin: 0;
+	/* Reset the document's padding values */
+	padding: 0;
+	/* Use the platform's native font as the default */
+	font-family: "Roboto", -apple-system, "San Francisco", "Segoe UI", "Helvetica Neue", sans-serif;
+	/* Define a reasonable base font size */
+	font-size: 12pt;
 
-    #left span, #right span {
-      font: 26px/1.714285714285714 'Open Sans',Arial, Helvetica, sans-serif;
-    }
+	/* Styles for better appearance on screens only -- are reset to defaults in print styles later */
 
-    #paper {
-      width: 827px;
-      height: 443px;
-      border: 1px solid black;
-      margin: 15px auto;
-      background-color: red;
-      background-size: 827px 443px;
-      font-family: monospace;
-      font-size: 26px;
-    }
+	/* Use a non-white background color to make the content areas stick out from the full page box */
+	background-color: #eee;
+}
+/* Styles that are shared by all elements */
+* {
+	/* Include the content box as well as padding and border for precise definitions */
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+.page {
+	/* Styles for better appearance on screens only -- are reset to defaults in print styles later */
 
+	/* Divide single pages with some space and center all pages horizontally */
+	margin: 1cm auto;
+	/* Define a white paper background that sticks out from the darker overall background */
+	background: #fff;
+	/* Show a drop shadow beneath each page */
+	box-shadow: 0 4px 5px rgba(75, 75, 75, 0.2);
+	/* Override outline from user agent stylesheets */
+	outline: 0;
+}
+/* Defines a class for manual page breaks via inserted .page-break element */
+div.page-break {
+	page-break-after: always;
+}
+/* For top-level headings only */
+h1 {
+	/* Force page breaks after */
+	page-break-before: always;
+}
+/* For all headings */
+h1, h2, h3, h4, h5, h6 {
+	/* Avoid page breaks immediately */
+	page-break-after: avoid;
+}
+/* For all paragraph tags */
+p {
+	/* Reset the margin so that the text starts and ends at the expected marks */
+	margin: 0;
+}
+/* For adjacent paragraph tags */
+p + p {
+	/* Restore the spacing between the paragraphs */
+	margin-top: 0.5cm;
+}
+/* For links in the document */
+a {
+	/* Prevent colorization or decoration */
+	text-decoration: none;
+	color: black;
+}
+/* For tables in the document */
+table {
+	/* Avoid page breaks inside */
+	page-break-inside: avoid;
+}
+/* Use CSS Paged Media to switch from continuous documents to sheet-like documents with separate pages */
+@page {
+	/* You can only change the size, margins, orphans, widows and page breaks here */
 
-    #left {
-      text-align: left;
-      width: 270px;
-      height: 100%;
-      float: left;
-      padding-top: 20px;
-    }
+	/* Require that at least this many lines of a paragraph must be left at the bottom of a page */
+	orphans: 0;
+	/* Require that at least this many lines of a paragraph must be left at the top of a new page */
+	widows: 0;
+}
+/* When the document is actually printed */
+@media print {
+	html, body {
+		/* Reset the document's background color */
+		background-color: #fff;
+	}
+	.page {
+		/* Reset all page styles that have been for better screen appearance only */
+		/* Break cascading by using the !important rule */
+		/* These resets are absolute must-haves for the print styles and the specificity may be higher elsewhere */
+		width: initial !important;
+		min-height: initial !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		border: initial !important;
+		border-radius: initial !important;
+		background: initial !important;
+		box-shadow: initial !important;
 
-    #left span {
-      padding-left: 25px;
-    }
-
-    #right span {
-      padding-right: 25px;
-    }
-
-    #right {
-      text-align: right;
-      width: 260px;
-      height: 100%;
-      float: left;
-      padding-top: 20px;
-    }
-
-    #qraddr img {
-      margin-left:25px;
-    }
-
-    #qrsecr img {
-      margin-right:25px;
-      display: inline !important;
-    }
-
-    .qr img {
-      width: 200px;
-      height: 200px;
-      margin-top:50px;
-      border: 3px solid white;
-    }
-
-    canvas {
-      display: none;
-    }
-
-    #address span, #secret span {
-      position:absolute;
-      transform: rotate(90deg);
-      transform-origin: left top 0;
-      padding-left: 15px;
-      background-color: white;
-      font-size: 16px;
-    }
-
-    #address, #secret {
-      width:38px;
-      height:100%;
-      float: left;
-    }
-
-    #secret {
-      text-align: right;
-    }
-
-    #void {
-      float: left;
-      height: 100%;
-      width: 220px;
-    }
-
-    button {
-      position: relative;
-      display: inline-block;
-      padding: 5px 15px;
-      height: 1.5em;
-      cursor: pointer;
-      font-size: 1.5em;
-      outline:none;
-    }
-
-    small {
-      position: absolute;
-      right: 0px;
-      bottom: 0px;
-      padding: 10px;
-    }
+		/* Force page breaks after each .page element of the document */
+		page-break-after: always;
+	}
+  .hideOnPrint {
+    display: none;
   }
+}
+.page {
+	/* Styles for better appearance on screens only -- are reset to defaults in print styles later */
 
-  @media print {
-    button { display: none; }
-    #ribbon {display: none; }
-  }
+	/* Reflect the paper width in the screen rendering (must match size from @page rule) */
+	width: 21.6cm;
+	/* Reflect the paper height in the screen rendering (must match size from @page rule) */
+	min-height: 27.9cm;
+
+	/* Reflect the actual page margin/padding on paper in the screen rendering (must match margin from @page rule) */
+	padding-left: 0cm;
+	padding-top: 0cm;
+	padding-right: 0cm;
+	padding-bottom: 0cm;
+}
+/* Use CSS Paged Media to switch from continuous documents to sheet-like documents with separate pages */
+@page {
+	/* You can only change the size, margins, orphans, widows and page breaks here */
+
+	/* Paper size and page orientation */
+	size: letter portrait;
+
+	/* Margin per single side of the page */
+	margin-left: 0cm;
+	margin-top: 0cm;
+	margin-right: 0cm;
+	margin-bottom: 0cm;
+}
+.addressSet {
+  padding: 8px 0;
+  margin: 0;
+  border-bottom: solid 1px lightgray;
+}
+.addressSet:first-child {
+  border-top: solid 1px lightgray;
+}
+.address {
+  width: 32%;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  vertical-align: top;
+  position: relative;
+}
+h2 {
+  margin: 10px;
+}
+.address p {
+  font-size: 10px;
+}
+.address:first-child {
+  border-right: 1px dashed lightgrey;
+}
+.address:last-child {
+  border-left: 1px dashed lightgrey;
+}
+p.addr, p.secret {
+  margin: 0;
+  padding: 9px 0;
+  color: #bf0a0a;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  letter-spacing: 0.55px;
+  font-size: 9px
+}
+.info img {
+  width: 37%;
+  display: block;
+  margin: 11px auto;
+}
+.infoBlock {
+  display: block;
+  height: 52px;
+  margin: 34px auto;
+  width: 58%;
+  text-align: center;
+}
+.infoBlock p {
+  text-align: left;
+  margin: 16px auto;
+  color: #333;
+}
+p.notice {
+  color: #bf0a0a;
+  font-size: 10px;
+  position: absolute;
+  bottom: 0;
+  right: 73px;
+  background: none;
+  margin: 0;
+}
+.qr img {
+  max-width: 90px;
+  margin: 20px auto;
+}
+.address hr{
+  border-top: 1px solid #ccc;
+  margin: 0 auto;
+  padding: 0;
+  width: 60%
+}
 
   </style>
 
 </head>
-<body onload="generate()">
+<body class="document" onload="generate()">
 
-    <div id="paper">
-      <div id="left">
-        <span>CasinoCoin Address</span>
-        <div id="qraddr" class="qr"></div>
-      </div>
-      <div id="address"><span id="addrtext"></span></div>
-      <div id="void"></div>
-      <div id="secret"><span id="secrtext"></span></div>
-      <div id="right">
-        <span>Secret Key</span>
-        <div id="qrsecr" class="qr"></div>
-      </div>
-    </div>
+  <div class="page" contenteditable="true">
+    <ul class="addressSet">
+      <li class="address public">
+        <h2>Address</h2>
+        <hr />
+        <p id="addr1" class="addr"></p>
+        <hr />
+        <div id="qraddr1" class="qr"></div>
+      </li>
+      <li class="address info">
+        <img src="CasinoCoin.png" />
+        <div class="infoBlock">
+          <p>Amount:____________________</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:____________________</p>
+          <p class="notice">Join us on cscchat.com</p>
+        </div>
+      </li>
+      <li class="address private">
+        <h2>Secret Key</h2>
+        <hr />
+        <p id="secret1" class="secret"></p>
+        <hr />
+        <div id="qrsecr1" class="qrsecr qr"></div>
+      </li>
+    </ul>
+    <ul class="addressSet">
+      <li class="address public">
+        <h2>Address</h2>
+        <hr />
+        <p id="addr2" class="addr"></p>
+        <hr />
+        <div id="qraddr2" class="qr"></div>
+      </li>
+      <li class="address info">
+        <img src="CasinoCoin.png" />
+        <div class="infoBlock">
+          <p>Amount:____________________</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:____________________</p>
+          <p class="notice">Join us on cscchat.com</p>
+        </div>
+      </li>
+      <li class="address private">
+        <h2>Secret Key</h2>
+        <hr />
+        <p id="secret2" class="secret"></p>
+        <hr />
+        <div id="qrsecr2" class="qrsecr qr"></div>
+      </li>
+    </ul>
+    <ul class="addressSet">
+      <li class="address public">
+        <h2>Address</h2>
+        <hr />
+        <p id="addr3" class="addr"></p>
+        <hr />
+        <div id="qraddr3" class="qr"></div>
+      </li>
+      <li class="address info">
+        <img src="CasinoCoin.png" />
+        <div class="infoBlock">
+          <p>Amount:____________________</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:____________________</p>
+          <p class="notice">Join us on cscchat.com</p>
+        </div>
+      </li>
+      <li class="address private">
+        <h2>Secret Key</h2>
+        <hr />
+        <p id="secret3" class="secret"></p>
+        <hr />
+        <div id="qrsecr3" class="qrsecr qr"></div>
+      </li>
+    </ul>
+    <ul class="addressSet">
+      <li class="address public">
+        <h2>Address</h2>
+        <hr />
+        <p id="addr4" class="addr"></p>
+        <hr />
+        <div id="qraddr4" class="qr"></div>
+      </li>
+      <li class="address info">
+        <img src="CasinoCoin.png" />
+        <div class="infoBlock">
+          <p>Amount:____________________</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:____________________</p>
+        </div>
+        <p class="notice">Join us on cscchat.com</p>
+      </li>
+      <li class="address private">
+        <h2>Secret Key</h2>
+        <hr />
+        <p id="secret4" class="secret"></p>
+        <hr />
+        <div id="qrsecr4" class="qrsecr qr"></div>
+      </li>
+    </ul>
+  <button class="hideOnPrint" onclick="generate()" title="Generate new">Generate New</button>
+  </div>
 
-    <br>
+  <script>
+    function generate(){
 
-    <button onclick="generate()" title="Generate new">Generate New</button>
-    <button onclick="window.print()" title="Print">Print</button>
-
-    <br>
-
-    <small><a href="https://cscchat.com">CSC Chat</a>, 2017</small>
-
-    <script>
-
-      function generate(){
+      for (var i in [...Array(4).keys()]) {
         var wallet = generateWallet();
+        var idx = parseInt(i) + 1;
 
-        document.getElementById('qraddr').innerHTML = '';
-        document.getElementById('qrsecr').innerHTML = '';
+        document.getElementById('qraddr'+idx).innerHTML = '';
+        document.getElementById('qrsecr'+idx).innerHTML = '';
 
-        var qraddr = new QRCode("qraddr");
+        var qraddr = new QRCode("qraddr"+idx);
         qraddr.makeCode(wallet["address"]);
-        document.getElementById('addrtext').innerHTML = wallet['address'];
+        document.getElementById("addr"+idx).innerHTML = wallet['address'];
 
-        var qrsecr = new QRCode("qrsecr");
+        var qrsecr = new QRCode("qrsecr"+idx);
         qrsecr.makeCode(wallet["secret"]);
-        document.getElementById('secrtext').innerHTML = wallet['secret'];
+        document.getElementById("secret"+idx).innerHTML = wallet['secret'];
+        console.log(wallet["address"] + " : " + wallet["secret"])
+
       }
+    }
 
-    </script>
-
-<a id="ribbon" href="https://github.com/cscchat/csc-paper-wallet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="data:image/png;base64,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" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+  </script>
 
 </body>
 </html>

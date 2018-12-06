@@ -15,172 +15,346 @@
 
   <script src="js/bundle.js"></script>
 
+
   <style>
+/*!
+ * HTML-Sheets-of-Paper (https://github.com/delight-im/HTML-Sheets-of-Paper)
+ * Copyright (c) delight.im (https://www.delight.im/)
+ * Licensed under the MIT License (https://opensource.org/licenses/MIT)
+ */
 
-  @media all {
-    body {
-      margin: 0 auto;
-      text-align: center;
-      font-family: Verdana, sans-serif;
-      padding: 10px;
-    }
+html, body {
+	/* Reset the document's margin values */
+	margin: 0;
+	/* Reset the document's padding values */
+	padding: 0;
+	/* Use the platform's native font as the default */
+	font-family: "Roboto", -apple-system, "San Francisco", "Segoe UI", "Helvetica Neue", sans-serif;
+	/* Define a reasonable base font size */
+	font-size: 12pt;
 
-    #left span, #right span {
-      font: 26px/1.714285714285714 'Open Sans',Arial, Helvetica, sans-serif;
-    }
+	/* Styles for better appearance on screens only -- are reset to defaults in print styles later */
 
-    #paper {
-      width: 827px;
-      height: 443px;
-      border: 1px solid black;
-      margin: 15px auto;
-      background-color: red;
-      background-size: 827px 443px;
-      font-family: monospace;
-      font-size: 26px;
-    }
+	/* Use a non-white background color to make the content areas stick out from the full page box */
+	background-color: #eee;
+}
+/* Styles that are shared by all elements */
+* {
+	/* Include the content box as well as padding and border for precise definitions */
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+.page {
+	/* Styles for better appearance on screens only -- are reset to defaults in print styles later */
 
+	/* Divide single pages with some space and center all pages horizontally */
+	margin: 1cm auto;
+	/* Define a white paper background that sticks out from the darker overall background */
+	background: #fff;
+	/* Show a drop shadow beneath each page */
+	box-shadow: 0 4px 5px rgba(75, 75, 75, 0.2);
+	/* Override outline from user agent stylesheets */
+	outline: 0;
+}
+/* Defines a class for manual page breaks via inserted .page-break element */
+div.page-break {
+	page-break-after: always;
+}
+/* For top-level headings only */
+h1 {
+	/* Force page breaks after */
+	page-break-before: always;
+}
+/* For all headings */
+h1, h2, h3, h4, h5, h6 {
+	/* Avoid page breaks immediately */
+	page-break-after: avoid;
+}
+/* For all paragraph tags */
+p {
+	/* Reset the margin so that the text starts and ends at the expected marks */
+	margin: 0;
+}
+/* For adjacent paragraph tags */
+p + p {
+	/* Restore the spacing between the paragraphs */
+	margin-top: 0.5cm;
+}
+/* For links in the document */
+a {
+	/* Prevent colorization or decoration */
+	text-decoration: none;
+	color: black;
+}
+/* For tables in the document */
+table {
+	/* Avoid page breaks inside */
+	page-break-inside: avoid;
+}
+/* Use CSS Paged Media to switch from continuous documents to sheet-like documents with separate pages */
+@page {
+	/* You can only change the size, margins, orphans, widows and page breaks here */
 
-    #left {
-      text-align: left;
-      width: 270px;
-      height: 100%;
-      float: left;
-      padding-top: 20px;
-    }
+	/* Require that at least this many lines of a paragraph must be left at the bottom of a page */
+	orphans: 0;
+	/* Require that at least this many lines of a paragraph must be left at the top of a new page */
+	widows: 0;
+}
+/* When the document is actually printed */
+@media print {
+	html, body {
+		/* Reset the document's background color */
+		background-color: #fff;
+	}
+	.page {
+		/* Reset all page styles that have been for better screen appearance only */
+		/* Break cascading by using the !important rule */
+		/* These resets are absolute must-haves for the print styles and the specificity may be higher elsewhere */
+		width: initial !important;
+		min-height: initial !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		border: initial !important;
+		border-radius: initial !important;
+		background: initial !important;
+		box-shadow: initial !important;
 
-    #left span {
-      padding-left: 25px;
-    }
-
-    #right span {
-      padding-right: 25px;
-    }
-
-    #right {
-      text-align: right;
-      width: 260px;
-      height: 100%;
-      float: left;
-      padding-top: 20px;
-    }
-
-    #qraddr img {
-      margin-left:25px;
-    }
-
-    #qrsecr img {
-      margin-right:25px;
-      display: inline !important;
-    }
-
-    .qr img {
-      width: 200px;
-      height: 200px;
-      margin-top:50px;
-      border: 3px solid white;
-    }
-
-    canvas {
-      display: none;
-    }
-
-    #address span, #secret span {
-      position:absolute;
-      transform: rotate(90deg);
-      transform-origin: left top 0;
-      padding-left: 15px;
-      background-color: white;
-      font-size: 16px;
-    }
-
-    #address, #secret {
-      width:38px;
-      height:100%;
-      float: left;
-    }
-
-    #secret {
-      text-align: right;
-    }
-
-    #void {
-      float: left;
-      height: 100%;
-      width: 220px;
-    }
-
-    button {
-      position: relative;
-      display: inline-block;
-      padding: 5px 15px;
-      height: 1.5em;
-      cursor: pointer;
-      font-size: 1.5em;
-      outline:none;
-    }
-
-    small {
-      position: absolute;
-      right: 0px;
-      bottom: 0px;
-      padding: 10px;
-    }
+		/* Force page breaks after each .page element of the document */
+		page-break-after: always;
+	}
+  .hideOnPrint {
+    display: none;
   }
+}
+.page {
+	/* Styles for better appearance on screens only -- are reset to defaults in print styles later */
 
-  @media print {
-    button { display: none; }
-    #ribbon {display: none; }
-  }
+	/* Reflect the paper width in the screen rendering (must match size from @page rule) */
+	width: 21.6cm;
+	/* Reflect the paper height in the screen rendering (must match size from @page rule) */
+	min-height: 27.9cm;
+
+	/* Reflect the actual page margin/padding on paper in the screen rendering (must match margin from @page rule) */
+	padding-left: 0cm;
+	padding-top: 0cm;
+	padding-right: 0cm;
+	padding-bottom: 0cm;
+}
+/* Use CSS Paged Media to switch from continuous documents to sheet-like documents with separate pages */
+@page {
+	/* You can only change the size, margins, orphans, widows and page breaks here */
+
+	/* Paper size and page orientation */
+	size: letter portrait;
+
+	/* Margin per single side of the page */
+	margin-left: 0cm;
+	margin-top: 0cm;
+	margin-right: 0cm;
+	margin-bottom: 0cm;
+}
+.addressSet {
+  padding: 8px 0;
+  margin: 0;
+  border-bottom: solid 1px lightgray;
+}
+.addressSet:first-child {
+  border-top: solid 1px lightgray;
+}
+.address {
+  width: 32%;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  vertical-align: top;
+  position: relative;
+}
+h2 {
+  margin: 10px;
+}
+.address p {
+  font-size: 10px;
+}
+.address:first-child {
+  border-right: 1px dashed lightgrey;
+}
+.address:last-child {
+  border-left: 1px dashed lightgrey;
+}
+p.addr, p.secret {
+  margin: 0;
+  padding: 9px 0;
+  color: #bf0a0a;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  letter-spacing: 0.55px;
+  font-size: 9px
+}
+.info img {
+  width: 37%;
+  display: block;
+  margin: 11px auto;
+}
+.infoBlock {
+  display: block;
+  height: 52px;
+  margin: 34px auto;
+  width: 58%;
+  text-align: center;
+}
+.infoBlock p {
+  text-align: left;
+  margin: 16px auto;
+  color: #333;
+}
+p.notice {
+  color: #bf0a0a;
+  font-size: 10px;
+  position: absolute;
+  bottom: 0;
+  right: 73px;
+  background: none;
+  margin: 0;
+}
+.qr img {
+  max-width: 90px;
+  margin: 20px auto;
+}
+.address hr{
+  border-top: 1px solid #ccc;
+  margin: 0 auto;
+  padding: 0;
+  width: 60%
+}
 
   </style>
 
 </head>
-<body onload="generate()">
+<body class="document" onload="generate()">
 
-    <div id="paper">
-      <div id="left">
-        <span>CasinoCoin Address</span>
-        <div id="qraddr" class="qr"></div>
-      </div>
-      <div id="address"><span id="addrtext"></span></div>
-      <div id="void"></div>
-      <div id="secret"><span id="secrtext"></span></div>
-      <div id="right">
-        <span>Secret Key</span>
-        <div id="qrsecr" class="qr"></div>
-      </div>
-    </div>
+  <div class="page" contenteditable="true">
+    <ul class="addressSet">
+      <li class="address public">
+        <h2>Address</h2>
+        <hr />
+        <p id="addr1" class="addr"></p>
+        <hr />
+        <div id="qraddr1" class="qr"></div>
+      </li>
+      <li class="address info">
+        <img src="CasinoCoin.png" />
+        <div class="infoBlock">
+          <p>Amount:____________________</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:____________________</p>
+          <p class="notice">Join us on cscchat.com</p>
+        </div>
+      </li>
+      <li class="address private">
+        <h2>Secret Key</h2>
+        <hr />
+        <p id="secret1" class="secret"></p>
+        <hr />
+        <div id="qrsecr1" class="qrsecr qr"></div>
+      </li>
+    </ul>
+    <ul class="addressSet">
+      <li class="address public">
+        <h2>Address</h2>
+        <hr />
+        <p id="addr2" class="addr"></p>
+        <hr />
+        <div id="qraddr2" class="qr"></div>
+      </li>
+      <li class="address info">
+        <img src="CasinoCoin.png" />
+        <div class="infoBlock">
+          <p>Amount:____________________</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:____________________</p>
+          <p class="notice">Join us on cscchat.com</p>
+        </div>
+      </li>
+      <li class="address private">
+        <h2>Secret Key</h2>
+        <hr />
+        <p id="secret2" class="secret"></p>
+        <hr />
+        <div id="qrsecr2" class="qrsecr qr"></div>
+      </li>
+    </ul>
+    <ul class="addressSet">
+      <li class="address public">
+        <h2>Address</h2>
+        <hr />
+        <p id="addr3" class="addr"></p>
+        <hr />
+        <div id="qraddr3" class="qr"></div>
+      </li>
+      <li class="address info">
+        <img src="CasinoCoin.png" />
+        <div class="infoBlock">
+          <p>Amount:____________________</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:____________________</p>
+          <p class="notice">Join us on cscchat.com</p>
+        </div>
+      </li>
+      <li class="address private">
+        <h2>Secret Key</h2>
+        <hr />
+        <p id="secret3" class="secret"></p>
+        <hr />
+        <div id="qrsecr3" class="qrsecr qr"></div>
+      </li>
+    </ul>
+    <ul class="addressSet">
+      <li class="address public">
+        <h2>Address</h2>
+        <hr />
+        <p id="addr4" class="addr"></p>
+        <hr />
+        <div id="qraddr4" class="qr"></div>
+      </li>
+      <li class="address info">
+        <img src="CasinoCoin.png" />
+        <div class="infoBlock">
+          <p>Amount:____________________</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:____________________</p>
+        </div>
+        <p class="notice">Join us on cscchat.com</p>
+      </li>
+      <li class="address private">
+        <h2>Secret Key</h2>
+        <hr />
+        <p id="secret4" class="secret"></p>
+        <hr />
+        <div id="qrsecr4" class="qrsecr qr"></div>
+      </li>
+    </ul>
+  <button class="hideOnPrint" onclick="generate()" title="Generate new">Generate New</button>
+  </div>
 
-    <br>
+  <script>
+    function generate(){
 
-    <button onclick="generate()" title="Generate new">Generate New</button>
-    <button onclick="window.print()" title="Print">Print</button>
-
-    <br>
-
-    <small><a href="https://cscchat.com">CSC Chat</a>, 2017</small>
-
-    <script>
-
-      function generate(){
+      for (var i in [...Array(4).keys()]) {
         var wallet = generateWallet();
+        var idx = parseInt(i) + 1;
 
-        document.getElementById('qraddr').innerHTML = '';
-        document.getElementById('qrsecr').innerHTML = '';
+        document.getElementById('qraddr'+idx).innerHTML = '';
+        document.getElementById('qrsecr'+idx).innerHTML = '';
 
-        var qraddr = new QRCode("qraddr");
+        var qraddr = new QRCode("qraddr"+idx);
         qraddr.makeCode(wallet["address"]);
-        document.getElementById('addrtext').innerHTML = wallet['address'];
+        document.getElementById("addr"+idx).innerHTML = wallet['address'];
 
-        var qrsecr = new QRCode("qrsecr");
+        var qrsecr = new QRCode("qrsecr"+idx);
         qrsecr.makeCode(wallet["secret"]);
-        document.getElementById('secrtext').innerHTML = wallet['secret'];
+        document.getElementById("secret"+idx).innerHTML = wallet['secret'];
+        console.log(wallet["address"] + " : " + wallet["secret"])
+
       }
+    }
 
-    </script>
-
-<a id="ribbon" href="https://github.com/cscchat/csc-paper-wallet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="img/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+  </script>
 
 </body>
 </html>
