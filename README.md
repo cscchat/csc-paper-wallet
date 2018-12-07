@@ -27,13 +27,3 @@ _This tutorial requires a higher level of technical knowledge._
 5.  Print the generated paper wallet. If you don't have a printer, store it on a dedicated USB that you will keep offline.
 6.  You can save your CasinoCoin address (NOT the secret key) whereever to conveniently monitor the balance on your paper wallet.
 7.  Reboot, now you can safely send CSC to CasinoCoin address of the paper wallet.
-
-### How to create a CasinoCoin paper wallet online?
-
-_This tutorial doesn't require much technical knowledge._
-
-1.  Navigate to https://ripply.eu/coldwallet.html
-2.  Copy the ripple address (NOT the secret key) and save it for later, to conveniently monitor the balance on your paper wallet
-3.  Click "Print".
-4.  Store the printed wallet in a safe place.
-5.  Now you can send XRP to ripple address of the paper wallet.
